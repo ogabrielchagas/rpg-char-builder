@@ -50,7 +50,6 @@ public class ItemsController {
         if(itemsModelOptional.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item not found.");
         }
-        //itemsModelOptional.get().removeItemsFromChars();
         itemsService.delete(itemsModelOptional.get());
         return ResponseEntity.status(HttpStatus.OK).body("Item deleted successfully");
     }

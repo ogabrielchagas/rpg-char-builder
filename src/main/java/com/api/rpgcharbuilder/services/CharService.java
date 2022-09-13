@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -39,7 +40,8 @@ public class CharService {
     public void deadOrAlive(Char charModel) {
         if(charModel.getHp() > 0)
             charModel.setAlive(true);
-        charModel.setAlive(false);
+        else
+            charModel.setAlive(false);
     }
 
     public boolean hasNoClasse(Char aChar) {
@@ -56,12 +58,20 @@ public class CharService {
 
     public Char addNewItem(Char aChar, Items items) {
         List<Items> itemsModelList = aChar.getItems();
+        if(itemsModelList == null){
+            List<Items> firstList = new ArrayList<>();
+            firstList.add(items);
+            aChar.setItems(firstList);
+            return aChar;
+        }
         itemsModelList.add(items);
         aChar.setItems(itemsModelList);
         return aChar;
     }
 
     public boolean withoutItems(Char aChar) {
+        if(aChar.getItems() == null)
+            return true;
         if(aChar.getItems().isEmpty())
             return true;
         return false;

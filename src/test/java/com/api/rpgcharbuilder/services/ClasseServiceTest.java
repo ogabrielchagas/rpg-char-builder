@@ -2,8 +2,8 @@ package com.api.rpgcharbuilder.services;
 
 import com.api.rpgcharbuilder.domains.*;
 import com.api.rpgcharbuilder.repositories.ClasseRepository;
-import org.assertj.core.api.Assertions;
 import org.checkerframework.checker.units.qual.C;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -73,10 +73,15 @@ class ClasseServiceTest {
         Mockito.verifyNoMoreInteractions(classeRepository);
     }
 
-
     @Test
-    void shouldDeleteOneClasse() {
+    void shouldDeleteOneClasse(){
+        final var novaClasse = new Classe();
 
+        Mockito.doNothing().when(classeRepository).delete(novaClasse);
+
+        classeService.delete(new Classe());
+        Mockito.verify(classeRepository, Mockito.times(1)).delete(novaClasse);
+        Mockito.verifyNoMoreInteractions(classeRepository);
     }
 
     @Test

@@ -32,6 +32,7 @@ public class ClasseController {
     @GetMapping("/{id}")
     public ResponseEntity<Object> getOne(@PathVariable(value = "id") Long id){
         Optional<Classe> classeModelOptional = classeService.findById(id);
+
         if(classeModelOptional.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Classe not found.");
         }
@@ -49,6 +50,7 @@ public class ClasseController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Object> delete(@PathVariable(value = "id") Long id){
         Optional<Classe> roleModelOptional = classeService.findById(id);
+
         if(roleModelOptional.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Classe not found.");
         }

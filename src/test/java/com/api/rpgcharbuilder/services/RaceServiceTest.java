@@ -62,7 +62,14 @@ class RaceServiceTest {
     }
 
     @Test
-    void delete() {
+    void shouldDeleteOneRace(){
+        final var novaRace = new Race();
+
+        Mockito.doNothing().when(raceRepository).delete(novaRace);
+
+        raceService.delete(new Race());
+        Mockito.verify(raceRepository, Mockito.times(1)).delete(novaRace);
+        Mockito.verifyNoMoreInteractions(raceRepository);
     }
 
     @Test

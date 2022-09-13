@@ -34,8 +34,11 @@ public class ItemsService {
     @Transactional
     public void delete(Items itemsModel){itemsRepository.delete(itemsModel);}
 
-    public boolean charHasItem(Char aChar, Items items) {
+    public boolean CharDoesntHaveItem(Char aChar, Items items) {
+
         List<Items> listItems = aChar.getItems();
+        if(listItems == null)
+            return true;
         if(!listItems.contains(items))
             return true;
         return false;

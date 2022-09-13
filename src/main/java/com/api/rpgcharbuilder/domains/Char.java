@@ -1,7 +1,5 @@
 package com.api.rpgcharbuilder.domains;
 
-import com.sun.istack.NotNull;
-
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -29,12 +27,21 @@ public class Char {
             inverseJoinColumns = @JoinColumn(name = "item_id"))
     private List<Items> items;
 
-    public Char(){}
+    public Char(String charName, int hp) {
+        this.charName = charName;
+        this.hp = hp;
+    }
+
+    public Char(List<Items> items) {
+        this.items = items;
+    }
 
     public Char(int level, Race race) {
         this.race = race;
         this.level = level;
     }
+
+    public Char(){}
 
     @Override
     public boolean equals(Object o) {
@@ -81,7 +88,7 @@ public class Char {
         this.hp = hp;
     }
 
-    public boolean isAlive() {
+    public boolean getAlive() {
         return alive;
     }
 

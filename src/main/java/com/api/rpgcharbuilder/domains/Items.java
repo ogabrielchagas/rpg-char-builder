@@ -30,6 +30,13 @@ public class Items {
 
     public Items(){}
 
+    public Items(CombatType itemType, String itemName, int requiredLevel, Dice damage) {
+        this.itemType = itemType;
+        this.itemName = itemName;
+        this.requiredLevel = requiredLevel;
+        this.damage = damage;
+    }
+
     @PreRemove
     public void removeItemsFromChars(){
         for (Char chars : char_id){

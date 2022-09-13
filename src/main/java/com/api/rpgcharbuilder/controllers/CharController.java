@@ -186,7 +186,7 @@ public class CharController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Character does not have items to attack.");
         }
         //SE O ID DO ITEM ESCOLHIDO EXISTIR NO DB, MAS O CHAR NÃO O POSSUIR
-        if(itemsService.charHasItem(charModelOptional.get(), itemsModelOptional.get())){
+        if(itemsService.CharDoesntHaveItem(charModelOptional.get(), itemsModelOptional.get())){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Character does not have that item to attack. \n" +
                     "Please select another item.");
         }
