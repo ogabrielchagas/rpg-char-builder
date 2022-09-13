@@ -1,6 +1,9 @@
 package com.api.rpgcharbuilder.services;
 
+import com.api.rpgcharbuilder.domains.Char;
 import com.api.rpgcharbuilder.domains.Classe;
+import com.api.rpgcharbuilder.domains.CombatType;
+import com.api.rpgcharbuilder.domains.Items;
 import com.api.rpgcharbuilder.repositories.ClasseRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,4 +31,17 @@ public class ClasseService {
 
     @Transactional
     public void delete(Classe classeModel){classeRepository.delete(classeModel);}
+
+    public boolean hasNoRace(Char aChar) {
+        if (aChar.getRace() == null)
+                return true;
+            return false;
+    }
+
+    public boolean isMelee(Classe aClasse) {
+        if(aClasse.getCombatType() == CombatType.MELEE)
+            return true;
+        return false;
+    }
+
 }

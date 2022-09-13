@@ -30,6 +30,13 @@ public class Items {
 
     public Items(){}
 
+    @PreRemove
+    public void removeItemsFromChars(){
+        for (Char chars : char_id){
+            chars.getItems().remove(this);
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
