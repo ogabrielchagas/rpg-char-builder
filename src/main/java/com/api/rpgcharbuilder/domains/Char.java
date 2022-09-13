@@ -31,6 +31,11 @@ public class Char {
 
     public Char(){}
 
+    public Char(int level, Race race) {
+        this.race = race;
+        this.level = level;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

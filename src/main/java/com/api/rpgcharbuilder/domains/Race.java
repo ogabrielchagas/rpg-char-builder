@@ -22,6 +22,11 @@ public class Race {
     @JsonBackReference
     private List<Char> char_id;
 
+    public Race(String raceName, Dice hpDice) {
+        this.raceName = raceName;
+        this.hpDice = hpDice;
+    }
+
     public Race(){}
 
     @Override

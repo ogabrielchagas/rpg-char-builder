@@ -22,6 +22,12 @@ public class Classe {
 
     public Classe(){}
 
+
+    public Classe(String classeName, CombatType combatType) {
+        this.classeName = classeName;
+        this.combatType = combatType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
