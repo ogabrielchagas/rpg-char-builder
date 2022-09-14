@@ -53,6 +53,7 @@ public class CharController {
         return ResponseEntity.status(HttpStatus.OK).body(charModelOptional.get());
     }
 
+    //GET DE TODOS OS ITEMS PERTENCESTES A UM CHAR
     @GetMapping("/{id}/items")
     ResponseEntity<Object> getItems(@PathVariable(value = "id") Long id){
         Optional<Char> charModelOptional = charService.findById(id);
@@ -90,6 +91,18 @@ public class CharController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Character not found.");
         }
         return ResponseEntity.status(HttpStatus.OK).body(charService.save(charModel));
+    }
+
+    //APENAS TROCAR  NOME DE UM CHAR
+    @PutMapping(value = "/changename/{id}")
+    public ResponseEntity<Object> update(@PathVariable(value = "id") Long id,
+                                         @RequestBody CharDto charDto){
+        Optional<Char> charModelOptional = charService.findById(id);
+        if(charModelOptional.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Character not found.");
+        }
+        charModelOptional.get().setCharName(charDto.getCharName());
+        return ResponseEntity.status(HttpStatus.OK).body(charService.save(charModelOptional.get()));
     }
 
     //CRIAÇÃO DE CHAR POR PARTES
@@ -200,7 +213,7 @@ public class CharController {
             charService.save(charModelOptional.get());
             charService.save(enemyModelOptional.get());
 
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("You Won!!\n Now you are Level " + charModelOptional.get().getLevel()
+            return ResponseEntity.status(HttpStatus.OK).body("You Won!!\n Now you are Level " + charModelOptional.get().getLevel()
                         + "\nYou get the money and items from your enemy");
         }
 

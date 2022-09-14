@@ -12,21 +12,28 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.any;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class ClasseServiceTest {
 
     @InjectMocks
@@ -58,7 +65,18 @@ class ClasseServiceTest {
 
     @Test
     void shouldFindAndReturnAllClasses() {
+        PageRequest pageRequest = PageRequest.of(0,4);
+        List<Classe> listClasses = Arrays.asList(new Classe(), new Classe(), new Classe(), new Classe());
+        Page<Classe> classes = new PageImpl<>(listClasses, pageRequest, listClasses.size());
 
+        when(classeRepository.findAll(Mockito.any(PageRequest.class))).thenReturn(classes);
+
+        final var actual = classeService.findAll(pageRequest);
+
+        assertThat(actual.getTotalElements()).isEqualTo(4);
+        assertThat(actual.getTotalPages()).isEqualTo(1);
+        Mockito.verify(classeRepository, Mockito.times(1)).findAll(Mockito.any(PageRequest.class));
+        Mockito.verifyNoMoreInteractions(classeRepository);
     }
 
     @Test

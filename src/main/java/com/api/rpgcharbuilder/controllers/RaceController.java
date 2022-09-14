@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @RestController
@@ -31,7 +32,7 @@ public class RaceController {
     public ResponseEntity<Object> getOne(@PathVariable(value = "id") Long id){
         Optional<Race> raceModelOptional = raceService.findById(id);
         if(raceModelOptional.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Race not found.");
+            throw new EntityNotFoundException("Race not found.");
         }
         return ResponseEntity.status(HttpStatus.OK).body(raceModelOptional.get());
     }

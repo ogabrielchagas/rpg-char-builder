@@ -13,15 +13,24 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class CharServiceTest {
 
     @InjectMocks
@@ -50,7 +59,19 @@ class CharServiceTest {
     }
 
     @Test
-    void findAll() {
+    void shouldFindAndReturnAllChars() {
+        PageRequest pageRequest = PageRequest.of(0,4);
+        List<Char> listChars = Arrays.asList(new Char(), new Char(), new Char(), new Char());
+        Page<Char> chars = new PageImpl<>(listChars, pageRequest, listChars.size());
+
+        when(charRepository.findAll(Mockito.any(PageRequest.class))).thenReturn(chars);
+
+        final var actual = charService.findAll(pageRequest);
+
+        assertThat(actual.getTotalElements()).isEqualTo(4);
+        assertThat(actual.getTotalPages()).isEqualTo(1);
+        Mockito.verify(charRepository, Mockito.times(1)).findAll(Mockito.any(PageRequest.class));
+        Mockito.verifyNoMoreInteractions(charRepository);
     }
 
     @Test
@@ -93,7 +114,7 @@ class CharServiceTest {
     }
 
     @Test
-    void charShouldHaveNoClasse() {
+    void charShouldNotHaveClasse() {
         final var novoChar = new Char();
 
         assertTrue(charService.hasNoClasse(novoChar));
@@ -120,7 +141,7 @@ class CharServiceTest {
     }
 
     @Test
-    void charLevelShouldNotBeLesserThanItemLevel() {
+    void charLevelShouldBeGreaterThanOrEqualToItemLevel() {
         final var novoChar = new CharDto();
         final var novoItem = new Items(CombatType.MELEE, "Espada", 1, Dice.D6);
 
@@ -172,7 +193,11 @@ class CharServiceTest {
     }
 
     @Test
-    void atkRoll() {
+    void isAtkRollInRange() {
+        int atk = charService.atkRoll();
+
+        assertThat(atk).isGreaterThan(0);
+        assertThat(atk).isLessThanOrEqualTo(20);
     }
 
     @Test
