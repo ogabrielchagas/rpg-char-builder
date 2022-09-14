@@ -106,11 +106,5 @@ class RaceServiceTest {
         Mockito.verifyNoMoreInteractions(raceRepository);
     }
 
-    @Test
-    void hpDiceRollShouldBeInRange() {
-        final var race = new Race("Gigante", Dice.D20);
 
-        assertThat(raceService.hpDiceRoll(race.getHpDice())).isGreaterThan(0);
-        assertThat(raceService.hpDiceRoll(race.getHpDice())).isLessThanOrEqualTo(100);
-    }
 }

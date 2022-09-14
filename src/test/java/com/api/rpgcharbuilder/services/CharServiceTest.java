@@ -3,8 +3,6 @@ package com.api.rpgcharbuilder.services;
 import com.api.rpgcharbuilder.domains.*;
 import com.api.rpgcharbuilder.dtos.CharDto;
 import com.api.rpgcharbuilder.repositories.CharRepository;
-import com.api.rpgcharbuilder.repositories.ItemsRepository;
-import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -40,7 +38,8 @@ class CharServiceTest {
     private CharRepository charRepository;
 
     @Test
-    void existsByCharName() {
+    void nameShouldExists() {
+
     }
 
     @Test
@@ -179,20 +178,6 @@ class CharServiceTest {
     }
 
     @Test
-    void charShouldBeDead() {
-        final var novoChar = new Char("KL", -1);
-
-        assertTrue(charService.isDead(novoChar));
-    }
-
-    @Test
-    void charShouldBeAlive() {
-        final var novoChar = new Char("KL", 2);
-
-        assertFalse(charService.isDead(novoChar));
-    }
-
-    @Test
     void isAtkRollInRange() {
         int atk = charService.atkRoll();
 
@@ -218,6 +203,8 @@ class CharServiceTest {
         assertThat(novoChar.getHp()).isEqualTo(5);
 
     }
+
+
 
     @Test
     void isLevelUpWorking() {
@@ -250,5 +237,13 @@ class CharServiceTest {
         assertTrue(charService.withoutItems(segChar));
         assertTrue(novoChar.getItems().contains(novoItem));
         assertTrue(novoChar.getItems().contains(segItem));
+    }
+
+    @Test
+    void hpDiceRollShouldBeInRange() {
+        final var race = new Race("Gigante", Dice.D20);
+
+        assertThat(charService.dieRoll(race.getHpDice())).isGreaterThan(0);
+        assertThat(charService.dieRoll(race.getHpDice())).isLessThanOrEqualTo(100);
     }
 }

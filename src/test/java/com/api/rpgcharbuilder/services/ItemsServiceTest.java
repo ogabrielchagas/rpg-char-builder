@@ -123,12 +123,4 @@ class ItemsServiceTest {
         assertFalse(itemsService.isMelee(itemMelee));
     }
 
-    @Test
-    void isDiceDmgInRange() {
-        final var novoItem =  new Items(CombatType.RANGED, "Arco", 2, Dice.D6);
-
-        //GARANTIR QUE INDEPENDENTE DO DADO A SER ROLADO O NÚMERO SEJA POSSÍVEL DENTRO DO RANGE DOS DADOS
-        assertThat(itemsService.diceDmg(novoItem)).isGreaterThan(0);
-        assertThat(itemsService.diceDmg(novoItem)).isLessThanOrEqualTo(100);
-    }
 }

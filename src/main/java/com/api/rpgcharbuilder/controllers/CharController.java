@@ -53,7 +53,7 @@ public class CharController {
         return ResponseEntity.status(HttpStatus.OK).body(charModelOptional.get());
     }
 
-    //GET DE TODOS OS ITEMS PERTENCESTES A UM CHAR
+    //GET DE TODOS OS ITEMS QUE PERTENCEM A UM CHAR
     @GetMapping("/{id}/items")
     ResponseEntity<Object> getItems(@PathVariable(value = "id") Long id){
         Optional<Char> charModelOptional = charService.findById(id);
@@ -69,7 +69,6 @@ public class CharController {
         if(charService.existsByCharName(charModel.getCharName()))
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: Character already registered");
         return ResponseEntity.status(HttpStatus.CREATED).body(charService.save(charModel));
-
     }
 
     @DeleteMapping(value = "/{id}")
@@ -129,7 +128,7 @@ public class CharController {
         }
         Char charModel = charModelOptional.get();
         charModel.setRace(raceModelOptional.get());
-        int hpPoints = raceService.hpConfigure(raceModelOptional.get().getHpDice(), charModel);
+        int hpPoints = charService.hpConfigure(raceModelOptional.get().getHpDice(), charModel);
         charModel.setHp(hpPoints);
         return ResponseEntity.status(HttpStatus.CREATED).body(charService.save(charModel));
     }
@@ -176,6 +175,7 @@ public class CharController {
         return ResponseEntity.status(HttpStatus.OK).body(charService.save(charModel));
     }
 
+    //ATAQUES ENTRE CHARS
     @PutMapping(value = "/{charid}/equip/{itemid}/atk/{enemy}")
     ResponseEntity<Object> attacking(@PathVariable(value = "charid") Long charId,
                                      @PathVariable(value = "itemid") Long itemId,
@@ -204,80 +204,45 @@ public class CharController {
                     "Please select another item.");
         }
         //SE O ENEMY ESTIVER SEM HP = LOOT DO COMBATE
-        if(charService.isDead(enemyModelOptional.get())){
-            enemyModelOptional.get().setAlive(false);
-            charService.levelUp(charModelOptional.get());
-            charModelOptional.get().setHp(charModelOptional.get().getHp() + raceService.hpDiceRoll(charModelOptional.get().getRace().getHpDice()) + charModelOptional.get().getLevel());
-            charService.loot(charModelOptional.get(), enemyModelOptional.get());
-
-            charService.save(charModelOptional.get());
-            charService.save(enemyModelOptional.get());
-
+        if(charService.isCombatOver(charModelOptional.get(), enemyModelOptional.get()))
             return ResponseEntity.status(HttpStatus.OK).body("You Won!!\n Now you are Level " + charModelOptional.get().getLevel()
-                        + "\nYou get the money and items from your enemy");
-        }
+                    + "\nYou get the money and items from your enemy");
 
         //SE O ITEM ESCOLHIDO FOR DO TIPO MELEE
         if(itemsService.isMelee(itemsModelOptional.get())) {
-            if (classeService.isMelee(charModelOptional.get().getClasse())) {
-                int diceRoll = charService.atkRoll() + charModelOptional.get().getLevel();
-                int enemyDef = charService.enemyDef(enemyModelOptional.get());
-                if (diceRoll >= enemyDef) {
-                    int atkDmg = itemsService.diceDmg(itemsModelOptional.get()) + charModelOptional.get().getLevel();
-                    charService.dmgTaken(enemyModelOptional.get(), atkDmg);
-                    ResponseEntity.status(HttpStatus.OK).body(charService.save(enemyModelOptional.get()));
-                    return ResponseEntity.status(HttpStatus.OK).body("Teste de Ataque: " + diceRoll + "\nDefesa do Inimigo: " +
-                            enemyDef + "\nDano do ataque: " + atkDmg + "\nVida do Inimigo: " + enemyModelOptional.get().getHp());
-                } else {
-                    return ResponseEntity.status(HttpStatus.CONFLICT).body("Teste de Ataque: " + diceRoll + "\nDefesa do Inimigo: " +
-                            enemyDef + "\nAttack does not hit.");
-                }
-            } else {
-                int diceRoll = charService.atkRoll();
-                int enemyDef = charService.enemyDef(enemyModelOptional.get());
-                if (diceRoll >= enemyDef) {
-                    int atkDmg = itemsService.diceDmg(itemsModelOptional.get());
-                    charService.dmgTaken(enemyModelOptional.get(), atkDmg);
-                    ResponseEntity.status(HttpStatus.OK).body(charService.save(enemyModelOptional.get()));
-                    return ResponseEntity.status(HttpStatus.OK).body("Teste de Ataque: " + diceRoll + "\nDefesa do Inimigo: " +
-                            enemyDef + "\nDano do ataque: " + atkDmg + "\nVida do Inimigo: " + enemyModelOptional.get().getHp());
-                }
-                else {
-                    return ResponseEntity.status(HttpStatus.CONFLICT).body("Teste de Ataque: " + diceRoll + "\nDefesa do Inimigo: " +
-                            enemyDef + "\nAttack does not hit.");
-                }
+            if (classeService.isMelee(charModelOptional.get().getClasse())){
+                int dmg = charService.CombatWithBonus(charModelOptional.get(), enemyModelOptional.get(), itemsModelOptional.get());
+                if (dmg == 0)
+                    return ResponseEntity.status(HttpStatus.CONFLICT).body("Attack does not hit.");
+                else
+                    return ResponseEntity.status(HttpStatus.OK).body("Dano do ataque: " + dmg + "\nVida do Inimigo: " +
+                            enemyModelOptional.get().getHp());
+            }
+            else{
+                int dmg = charService.CombatWithoutBonus(charModelOptional.get(), enemyModelOptional.get(), itemsModelOptional.get());
+                if (dmg == 0)
+                    return ResponseEntity.status(HttpStatus.CONFLICT).body("Attack does not hit.");
+                else
+                    return ResponseEntity.status(HttpStatus.OK).body("Dano do ataque: " + dmg + "\nVida do Inimigo: "
+                            + enemyModelOptional.get().getHp());
             }
         }
         //SE O ITEM ESCOLHIDO FOR RANGED
         else {
-            if (!classeService.isMelee(charModelOptional.get().getClasse())){
-                int diceRoll = charService.atkRoll() + charModelOptional.get().getLevel();
-                int enemyDef = charService.enemyDef(enemyModelOptional.get());
-                if (diceRoll >= enemyDef) {
-                    int atkDmg = itemsService.diceDmg(itemsModelOptional.get()) + charModelOptional.get().getLevel();
-                    charService.dmgTaken(enemyModelOptional.get(), atkDmg);
-                    ResponseEntity.status(HttpStatus.OK).body(charService.save(enemyModelOptional.get()));
-                    return ResponseEntity.status(HttpStatus.OK).body("Teste de Ataque: " + diceRoll + "\nDefesa do Inimigo: " +
-                            enemyDef + "\nDano do ataque: " + atkDmg + "\nVida do Inimigo: " + enemyModelOptional.get().getHp());
-                } else {
-                    return ResponseEntity.status(HttpStatus.CONFLICT).body("Teste de Ataque: " + diceRoll + "\nDefesa do Inimigo: " +
-                            enemyDef + "\nAttack does not hit.");
-                }
-            }
-            else{
-                int diceRoll = charService.atkRoll();
-                int enemyDef = charService.enemyDef(enemyModelOptional.get());
-                if (diceRoll >= enemyDef) {
-                    int atkDmg = itemsService.diceDmg(itemsModelOptional.get());
-                    charService.dmgTaken(enemyModelOptional.get(), atkDmg);
-                    ResponseEntity.status(HttpStatus.OK).body(charService.save(enemyModelOptional.get()));
-                    return ResponseEntity.status(HttpStatus.OK).body("Teste de Ataque: " + diceRoll + "\nDefesa do Inimigo: " +
-                            enemyDef + "\nDano do ataque: " + atkDmg + "\nVida do Inimigo: " + enemyModelOptional.get().getHp());
-                }
-                else {
-                    return ResponseEntity.status(HttpStatus.CONFLICT).body("Teste de Ataque: " + diceRoll + "\nDefesa do Inimigo: " +
-                            enemyDef + "\nAttack does not hit.");
-                }
+            if (!classeService.isMelee(charModelOptional.get().getClasse())) {
+                int dmg = charService.CombatWithBonus(charModelOptional.get(), enemyModelOptional.get(), itemsModelOptional.get());
+                if (dmg == 0)
+                    return ResponseEntity.status(HttpStatus.CONFLICT).body("Attack does not hit.");
+                else
+                    return ResponseEntity.status(HttpStatus.OK).body("Dano do ataque: " + dmg + "\nVida do Inimigo: "
+                            + enemyModelOptional.get().getHp());
+            } else {
+                int dmg = charService.CombatWithoutBonus(charModelOptional.get(), enemyModelOptional.get(), itemsModelOptional.get());
+                if (dmg == 0)
+                    return ResponseEntity.status(HttpStatus.CONFLICT).body("Attack does not hit.");
+                else
+                    return ResponseEntity.status(HttpStatus.OK).body("Dano do ataque: " + dmg + "\nVida do Inimigo: "
+                            + enemyModelOptional.get().getHp());
             }
         }
     }
@@ -290,7 +255,7 @@ public class CharController {
         if(classeService.hasNoRace(charModelOptional.get()))
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Char must have a Race to be revived");
 
-        int hpPoints = raceService.hpConfigure(charModelOptional.get().getRace().getHpDice(), charModelOptional.get());
+        int hpPoints = charService.hpConfigure(charModelOptional.get().getRace().getHpDice(), charModelOptional.get());
         charModelOptional.get().setHp(hpPoints);
         return ResponseEntity.status(HttpStatus.OK).body(charService.save(charModelOptional.get()));
     }

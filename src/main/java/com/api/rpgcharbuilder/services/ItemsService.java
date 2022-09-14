@@ -49,34 +49,4 @@ public class ItemsService {
             return true;
         return false;
     }
-
-    public int diceDmg(Items items) {
-        Random random = new Random();
-        int dmgRoll = 0;
-        Dice dice = items.getDamage();
-        switch (dice){
-            case D4:
-                dmgRoll = random.nextInt(4) + 1;
-                break;
-            case D6:
-                dmgRoll += random.nextInt(6) + 1;
-                break;
-            case D8:
-                dmgRoll += random.nextInt(8) + 1;
-                break;
-            case D10:
-                dmgRoll += random.nextInt(10) + 1;
-                break;
-            case D12:
-                dmgRoll += random.nextInt(12) + 1;
-                break;
-            case D20:
-                dmgRoll += random.nextInt(20) + 1;
-                break;
-            case D100:
-                dmgRoll += random.nextInt(100) + 1;
-                break;
-        }
-        return dmgRoll;
-    }
 }
