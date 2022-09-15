@@ -1,6 +1,7 @@
 package com.api.rpgcharbuilder.domains;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,6 +14,7 @@ public class Race {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ApiModelProperty(value = "Nome da raça do RPG, como Humanos, Anões e Elfos.", required = true)
     private String raceName;
 
     @Enumerated(value = EnumType.STRING)

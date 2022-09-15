@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/chars")
+@RequestMapping("/api/v1/chars")
 public class CharController {
     private final CharService charService;
     private final RaceService raceService;
@@ -89,6 +89,8 @@ public class CharController {
         if(charModelOptional.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Character not found.");
         }
+
+
         return ResponseEntity.status(HttpStatus.OK).body(charService.save(charModel));
     }
 

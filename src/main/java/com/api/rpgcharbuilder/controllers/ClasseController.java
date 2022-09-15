@@ -2,6 +2,8 @@ package com.api.rpgcharbuilder.controllers;
 
 import com.api.rpgcharbuilder.domains.Classe;
 import com.api.rpgcharbuilder.services.ClasseService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -14,7 +16,8 @@ import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/classe")
+@RequestMapping("/api/v1/classe")
+@Api(tags = {"Classe Controller"})
 public class ClasseController {
     private final ClasseService classeService;
 
@@ -23,12 +26,16 @@ public class ClasseController {
         this.classeService = classeService;
     }
 
+    @ApiOperation(value = "Retorna uma lista com paginação das classes de RPG cadastradas", notes = "Jogadores vão escolher a classe para o seu" +
+            " personagem dessa lista que deve ser previamente cadastrada")
     @GetMapping
     public ResponseEntity<Page<Classe>> getAll(@PageableDefault(sort = "id",
             direction = Sort.Direction.ASC) Pageable pageable){
         return ResponseEntity.status(HttpStatus.OK).body(classeService.findAll(pageable));
     }
 
+    @ApiOperation(value = "Retorna uma classe das classes de RPG cadastradas através de uma busca por ID", notes = "Jogadores vão escolher a classe para o seu" +
+            " personagem através de uma lista que carregará este ID da classe para atribuir ao personagem.")
     @GetMapping("/{id}")
     public ResponseEntity<Object> getOne(@PathVariable(value = "id") Long id){
         Optional<Classe> classeModelOptional = classeService.findById(id);
@@ -39,6 +46,8 @@ public class ClasseController {
         return ResponseEntity.status(HttpStatus.OK).body(classeModelOptional.get());
     }
 
+    @ApiOperation(value = "Cria uma nova Classe de RPG", notes = "Endpoint mapeada para o organizador do jogo de RPG (Mestre)" +
+            " adicionar novas opções de escolha de classes a seu jogo como Guerreiros, Magos e Arqueiros.")
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody Classe classeModel){
         if(classeService.existsByClasseName(classeModel.getClasseName())){
@@ -47,6 +56,8 @@ public class ClasseController {
         return ResponseEntity.status(HttpStatus.CREATED).body(classeService.save(classeModel));
     }
 
+    @ApiOperation(value = "Deleta uma Classe de RPG previamente cadastrada", notes = "Endpoint mapeada para o organizador do jogo de RPG (Mestre)" +
+            " deletar opções de escolha de classes do seu jogo.")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Object> delete(@PathVariable(value = "id") Long id){
         Optional<Classe> roleModelOptional = classeService.findById(id);
@@ -59,6 +70,8 @@ public class ClasseController {
         return ResponseEntity.status(HttpStatus.OK).body("Classe deleted successfully");
     }
 
+    @ApiOperation(value = "Atualiza informações de uma Classe de RPG previamente cadastrada", notes = "Endpoint mapeada para o organizador do jogo de RPG (Mestre)" +
+            " atualizar uma opção de escolha de classe do seu jogo.")
     @PutMapping(value = "/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") Long id,
                                          @RequestBody Classe classeModel){
