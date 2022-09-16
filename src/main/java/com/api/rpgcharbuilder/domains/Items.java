@@ -1,6 +1,7 @@
 package com.api.rpgcharbuilder.domains;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,19 +12,24 @@ import java.util.Objects;
 public class Items {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(value = "ID gerado para identificação dos Itens do RPG", required = true)
     private Long id;
 
+    @ApiModelProperty(value = "Tipo de combate do Item, MELEE (Corpo a Corpo) ou RANGED (A Distancia)", required = true)
     @Enumerated(value = EnumType.STRING)
     private CombatType itemType;
 
+    @ApiModelProperty(value = "Nome do Item de RPG como Espadas, Arcos e Cajados", required = true)
     private String itemName;
 
+    @ApiModelProperty(value = "Level requerido para um personagem usar esse item", required = true)
     private int requiredLevel;
 
+    @ApiModelProperty(value = "Dado que representa o Range de Dano que um item causa", required = true)
     @Enumerated(value = EnumType.STRING)
     private Dice damage;
 
-
+    @ApiModelProperty(value = "Campo não preenchido por usuários, utilizado para que o mapemanto ManyToMany reconheça quais personagens possuem esses itens")
     @ManyToMany(mappedBy = "items")
     @JsonBackReference
     private List<Char> char_id;

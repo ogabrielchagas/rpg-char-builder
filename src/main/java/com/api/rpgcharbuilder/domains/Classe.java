@@ -1,6 +1,7 @@
 package com.api.rpgcharbuilder.domains;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,11 +12,15 @@ import java.util.Objects;
 public class Classe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(value = "ID gerado para identificação das Classes do RPG", required = true)
     private Long id;
+    @ApiModelProperty(value = "Nome da Classe do RPG como Guerreiro, Mago e Arqueiro", required = true)
     private String classeName;
+    @ApiModelProperty(value = "Tipo de combate da Classe, MELEE (Corpo a Corpo) ou RANGED (A Distancia), Influencia quais itens cada classe se sai melhor", required = true)
     @Enumerated(value = EnumType.STRING)
     private CombatType combatType;
 
+    @ApiModelProperty(value = "Campo não preenchido por usuários, utilizado para que o mapemanto ManyToOne reconheça quais personagens são dessa classe")
     @OneToMany(mappedBy = "classe", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Char> char_id;

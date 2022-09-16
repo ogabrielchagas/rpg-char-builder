@@ -30,8 +30,10 @@ public class SwaggerConfig{
                 .build()
                 .pathMapping("/")
                 .apiInfo(metaData())
-                .tags(new Tag("Race Controller","Controlador para Raças jogáveis inspiradas de Gêneros RPG/Fantasia"),
-                        new Tag("Classe Controller", "Controlador para Classes/Profissões inspiradas de Gêneros RPG/Fantasia"));
+                .tags(new Tag("Race Controller","Controlador para Raças jogáveis inspiradas de Gêneros RPG/Fantasia Medieval"),
+                        new Tag("Classe Controller", "Controlador para Classes/Profissões inspiradas de Gêneros RPG/Fantasia Medieval"),
+                        new Tag("Items Controller", "Controlador para Itens jogáveis inspirados de Gêneros RPG/Fantasia Medieval"),
+                        new Tag("Characters Controller", "Controlador para os Personagens(Chars) dos Jogadores e do Mestre"));
     }
 
     private ApiInfo metaData(){
@@ -41,7 +43,8 @@ public class SwaggerConfig{
 
         return new ApiInfo(
                 "RPG Character Builder API Documentation",
-                "A REST API to create RPG Characters",
+                "A REST API to create RPG Characters with Races, Classes and Items options provided by your DM!!\n\n\n" +
+                        "Tell us your name, choose a race, pick a class, grab your items and battle among yourselves!!",
                 "1.0",
                 "Terms of Service: ...",
                 contact,

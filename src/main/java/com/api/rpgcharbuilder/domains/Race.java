@@ -1,25 +1,30 @@
 package com.api.rpgcharbuilder.domains;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
+
 @Entity
 @Table(name = "tb_race")
 public class Race {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(value = "ID gerado para identificação das Raças do RPG", required = true)
     private Long id;
 
     @ApiModelProperty(value = "Nome da raça do RPG, como Humanos, Anões e Elfos.", required = true)
     private String raceName;
 
+    @ApiModelProperty(value = "Dado de Vida(HP) da raça do RPG, responsável por definir a HP de um Personagem", required = true)
     @Enumerated(value = EnumType.STRING)
     private Dice hpDice;
 
+    @ApiModelProperty(value = "Campo não preenchido por usuários, utilizado para que o mapemanto ManyToOne reconheça quais personagens são dessa raça")
     @OneToMany(mappedBy = "race", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Char> char_id;

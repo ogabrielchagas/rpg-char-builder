@@ -3,6 +3,8 @@ package com.api.rpgcharbuilder.controllers;
 import com.api.rpgcharbuilder.domains.Classe;
 import com.api.rpgcharbuilder.services.ClasseService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,7 +48,7 @@ public class ClasseController {
         return ResponseEntity.status(HttpStatus.OK).body(classeModelOptional.get());
     }
 
-    @ApiOperation(value = "Cria uma nova Classe de RPG", notes = "Endpoint mapeada para o organizador do jogo de RPG (Mestre)" +
+    @ApiOperation(value = "Cria uma nova Classe de RPG", notes = "Endpoint mapeado para o organizador do jogo de RPG (Mestre)" +
             " adicionar novas opções de escolha de classes a seu jogo como Guerreiros, Magos e Arqueiros.")
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody Classe classeModel){
@@ -56,7 +58,7 @@ public class ClasseController {
         return ResponseEntity.status(HttpStatus.CREATED).body(classeService.save(classeModel));
     }
 
-    @ApiOperation(value = "Deleta uma Classe de RPG previamente cadastrada", notes = "Endpoint mapeada para o organizador do jogo de RPG (Mestre)" +
+    @ApiOperation(value = "Deleta uma Classe de RPG previamente cadastrada", notes = "Endpoint mapeado para o organizador do jogo de RPG (Mestre)" +
             " deletar opções de escolha de classes do seu jogo.")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Object> delete(@PathVariable(value = "id") Long id){
@@ -70,7 +72,7 @@ public class ClasseController {
         return ResponseEntity.status(HttpStatus.OK).body("Classe deleted successfully");
     }
 
-    @ApiOperation(value = "Atualiza informações de uma Classe de RPG previamente cadastrada", notes = "Endpoint mapeada para o organizador do jogo de RPG (Mestre)" +
+    @ApiOperation(value = "Atualiza informações de uma Classe de RPG previamente cadastrada", notes = "Endpoint mapeado para o organizador do jogo de RPG (Mestre)" +
             " atualizar uma opção de escolha de classe do seu jogo.")
     @PutMapping(value = "/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") Long id,

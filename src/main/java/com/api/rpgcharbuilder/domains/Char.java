@@ -1,5 +1,7 @@
 package com.api.rpgcharbuilder.domains;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -9,22 +11,31 @@ import java.util.Objects;
 public class Char {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(value = "ID gerado para identificação dos Personagens do RPG", required = true)
     private Long id;
+    @ApiModelProperty(value = "Nome do Personagem do RPG", required = true)
     private String charName;
+    @ApiModelProperty(value = "Level do Personagem(Personagens dos Jogadores criados começam Level 1)", required = true)
     private int level;
+    @ApiModelProperty(value = "Pontos de Vida(HP) do Personagem automaticamente configurados quando selecionada uma Raça", required = true)
     private int hp;
+    @ApiModelProperty(value = "Indica se o personagem está vivo(true) ou morto(false)", required = true)
     private boolean alive;
+    @ApiModelProperty(value = "Representa as moedas(dinheiro) do Personagem (Personagens dos Jogadores criados começam com 10 moedas)", required = true)
     private Long money;
     @ManyToOne
+    @ApiModelProperty(value = "Campo que associa uma Raça ao Personagem")
     @JoinColumn(name = "race_id")
     private Race race;
     @ManyToOne
     @JoinColumn(name = "classe_id")
+    @ApiModelProperty(value = "Campo que associa uma Classe ao Personagem")
     private Classe classe;
     @ManyToMany
     @JoinTable(name = "chars_items",
             joinColumns = @JoinColumn(name = "char_id"),
             inverseJoinColumns = @JoinColumn(name = "item_id"))
+    @ApiModelProperty(value = "Campo que associa os Itens possuidos por um Personagem")
     private List<Items> items;
 
     public Char(String charName, int hp) {
