@@ -28,7 +28,8 @@ public class Classe {
     public Classe(){}
 
 
-    public Classe(String classeName, CombatType combatType) {
+    public Classe(Long id, String classeName, CombatType combatType) {
+        this.id = id;
         this.classeName = classeName;
         this.combatType = combatType;
     }

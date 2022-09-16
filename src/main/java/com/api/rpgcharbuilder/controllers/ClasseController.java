@@ -3,8 +3,6 @@ package com.api.rpgcharbuilder.controllers;
 import com.api.rpgcharbuilder.domains.Classe;
 import com.api.rpgcharbuilder.services.ClasseService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityNotFoundException;
+
 import java.util.Optional;
 
 @RestController
@@ -44,6 +42,17 @@ public class ClasseController {
 
         if(classeModelOptional.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Classe not found.");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(classeModelOptional.get());
+    }
+
+    @ApiOperation(value = "Retorna uma classe das clases de RPG cadastradas através de uma busca por Nome", notes = "Endpoint mapeado como opção" +
+            " de filtragem das classes por nome.")
+    @GetMapping("/findbyname/{name}")
+    public ResponseEntity<Object> getOneByName(@PathVariable(value = "name") String classeName){
+        Optional<Classe> classeModelOptional = classeService.findByClasseName(classeName);
+        if(classeModelOptional.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Classe not Found");
         }
         return ResponseEntity.status(HttpStatus.OK).body(classeModelOptional.get());
     }

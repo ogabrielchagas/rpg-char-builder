@@ -1,7 +1,6 @@
 package com.api.rpgcharbuilder.domains;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
@@ -29,7 +28,8 @@ public class Race {
     @JsonBackReference
     private List<Char> char_id;
 
-    public Race(String raceName, Dice hpDice) {
+    public Race(Long id, String raceName, Dice hpDice) {
+        this.id = id;
         this.raceName = raceName;
         this.hpDice = hpDice;
     }

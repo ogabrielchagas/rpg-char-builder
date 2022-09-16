@@ -59,6 +59,17 @@ public class CharController {
         return ResponseEntity.status(HttpStatus.OK).body(charModelOptional.get());
     }
 
+    @ApiOperation(value = "Retorna um personagem dos personagens do RPG cadastrados através de uma busca por Nome", notes = "Endpoint mapeado como opção" +
+            " de filtragem dos personagens por nome.")
+    @GetMapping("/findbyname/{name}")
+    public ResponseEntity<Object> getOneByName(@PathVariable(value = "name") String charName){
+        Optional<Char> charModelOptional = charService.findByCharName(charName);
+        if(charModelOptional.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Character not Found");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(charModelOptional.get());
+    }
+
     @ApiOperation(value = "Retorna uma lista dos itens que um personagem buscado por seu ID possui", notes = "Jogadores ou o Mestre" +
             "selecionam de uma lista de personagens pré cadastrados que carregará o ID e retorna a lista dos itens do personagem associado a esse ID.")
     @GetMapping("/{id}/items")

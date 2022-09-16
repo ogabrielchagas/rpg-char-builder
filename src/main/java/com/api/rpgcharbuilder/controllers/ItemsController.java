@@ -43,6 +43,17 @@ public class ItemsController {
         return ResponseEntity.status(HttpStatus.OK).body(itemsModelOptional.get());
     }
 
+    @ApiOperation(value = "Retorna um item dos itens de RPG cadastrados através de uma busca por Nome", notes = "Endpoint mapeado como opção" +
+            " de filtragem dos itens por nome.")
+    @GetMapping("/findbyname/{name}")
+    public ResponseEntity<Object> getOneByName(@PathVariable(value = "name") String itemName){
+        Optional<Items> itemsModelOptional = itemsService.findByItemName(itemName);
+        if(itemsModelOptional.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item not Found");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(itemsModelOptional.get());
+    }
+
     @ApiOperation(value = "Cria um novo Item do RPG", notes = "Endpoint mapeado para o organizador do jogo de RPG (Mestre)" +
             " adicionar novas opções de escolha de itens a seu jogo como Espadas, Arcos e Cajados.")
     @PostMapping

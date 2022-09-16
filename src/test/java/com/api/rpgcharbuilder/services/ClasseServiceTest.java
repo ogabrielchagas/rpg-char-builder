@@ -2,8 +2,7 @@ package com.api.rpgcharbuilder.services;
 
 import com.api.rpgcharbuilder.domains.*;
 import com.api.rpgcharbuilder.repositories.ClasseRepository;
-import org.checkerframework.checker.units.qual.C;
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -17,17 +16,14 @@ import org.mockito.quality.Strictness;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
-import javax.persistence.EntityNotFoundException;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.hamcrest.Matchers.any;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -44,14 +40,9 @@ class ClasseServiceTest {
 
 
     @Test
-    void existsByClasseName() {
-
-    }
-
-    @Test
     void shouldSaveOneClasse() {
         //Prepara
-        final var classeToSave = new Classe("Mago", CombatType.RANGED);
+        final var classeToSave = new Classe(1L, "Mago", CombatType.RANGED);
         Mockito.when(classeRepository.save(Mockito.any(Classe.class))).thenReturn(classeToSave);
 
         //Faz
@@ -80,8 +71,46 @@ class ClasseServiceTest {
     }
 
     @Test
+    void shouldFindAndReturnOneClasseByName() {
+        final var expectedClasse = new Classe(1L, "Mago", CombatType.RANGED);
+        Mockito.when(classeRepository.findByClasseName(Mockito.anyString())).thenReturn(Optional.of(expectedClasse));
+
+        final var actual = classeService.findByClasseName("Guerreiro");
+
+        assertThat(actual).usingRecursiveComparison().isEqualTo(Optional.of(expectedClasse));
+        Mockito.verify(classeRepository, Mockito.times(1)).findByClasseName(Mockito.anyString());
+        Mockito.verifyNoMoreInteractions(classeRepository);
+    }
+
+    @Test
+    void shouldFindASpecificClasseByName(){
+        final var expectedClasse = new Classe(1L, "Mago", CombatType.RANGED);
+        Mockito.when(classeRepository.findByClasseName("Mago")).thenReturn(Optional.of(expectedClasse));
+
+        final var actual = classeService.findByClasseName("Mago");
+
+        assertThat(actual).usingRecursiveComparison().isEqualTo(Optional.of(expectedClasse));
+        Mockito.verify(classeRepository, Mockito.times(1)).findByClasseName(Mockito.anyString());
+        Mockito.verifyNoMoreInteractions(classeRepository);
+    }
+
+    @Test
+    void shouldNotFindASpecificClasseByName(){
+        final var expectedClasse = new Classe(1L, "Mago", CombatType.RANGED);
+        Mockito.when(classeRepository.findByClasseName("Mago")).thenReturn(Optional.of(expectedClasse));
+
+        final var actual = classeService.findByClasseName("Guerreiro");
+
+        assertThat(actual).usingRecursiveComparison().isNotEqualTo(Optional.of(expectedClasse));
+        Mockito.verify(classeRepository, Mockito.times(1)).findByClasseName(Mockito.anyString());
+        Mockito.verifyNoMoreInteractions(classeRepository);
+    }
+
+
+
+    @Test
     void shouldFindAndReturnOneClasseById() {
-        final var expectedClasse = new Classe("Mago", CombatType.RANGED);
+        final var expectedClasse = new Classe(1L, "Mago", CombatType.RANGED);
         Mockito.when(classeRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(expectedClasse));
 
         final var actual = classeService.findById(8L);
@@ -90,6 +119,32 @@ class ClasseServiceTest {
         Mockito.verify(classeRepository, Mockito.times(1)).findById(Mockito.anyLong());
         Mockito.verifyNoMoreInteractions(classeRepository);
     }
+
+    @Test
+    void shouldFindASpecificClasseByID(){
+        final var expectedClasse = new Classe(1L, "Mago", CombatType.RANGED);
+        Mockito.when(classeService.findById(1L)).thenReturn(Optional.of(expectedClasse));
+
+        final var actual = classeService.findById(1L);
+
+        assertThat(actual).usingRecursiveComparison().isEqualTo(Optional.of(expectedClasse));
+        Mockito.verify(classeRepository, Mockito.times(1)).findById(Mockito.anyLong());
+        Mockito.verifyNoMoreInteractions(classeRepository);
+    }
+
+    @Test
+    void shouldNotFindASpecificClasseByID(){
+        final var expectedClasse = new Classe(1L, "Mago", CombatType.RANGED);
+        Mockito.when(classeService.findById(1L)).thenReturn(Optional.of(expectedClasse));
+
+        final var actual = classeService.findById(2L);
+
+        assertThat(actual).usingRecursiveComparison().isNotEqualTo(Optional.of(expectedClasse));
+        Mockito.verify(classeRepository, Mockito.times(1)).findById(Mockito.anyLong());
+        Mockito.verifyNoMoreInteractions(classeRepository);
+    }
+
+
 
     @Test
     void shouldDeleteOneClasse(){
@@ -104,7 +159,7 @@ class ClasseServiceTest {
 
     @Test
     void charShouldHaveRace() {
-        final var charWithRace = new Char(1, new Race("Gigante", Dice.D20));
+        final var charWithRace = new Char(1, new Race(1L, "Gigante", Dice.D20));
 
         assertFalse(classeService.hasNoRace(charWithRace));
     }
@@ -118,14 +173,14 @@ class ClasseServiceTest {
 
     @Test
     void classeShouldBeMeleeType() {
-        final var classeMelee = new Classe("Bárbaro", CombatType.MELEE);
+        final var classeMelee = new Classe(1L, "Bárbaro", CombatType.MELEE);
 
         assertTrue(classeService.isMelee(classeMelee));
     }
 
     @Test
     void classeShouldNotBeMeleeType() {
-        final var classeMelee = new Classe("Mago", CombatType.RANGED);
+        final var classeMelee = new Classe(1L, "Mago", CombatType.RANGED);
 
         assertFalse(classeService.isMelee(classeMelee));
     }

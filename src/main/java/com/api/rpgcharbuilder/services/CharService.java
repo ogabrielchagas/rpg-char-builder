@@ -6,10 +6,8 @@ import com.api.rpgcharbuilder.domains.Items;
 import com.api.rpgcharbuilder.repositories.CharRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseStatus;
+
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -36,6 +34,8 @@ public class CharService {
     public Page<Char> findAll(Pageable pageable){return charRepository.findAll(pageable);}
 
     public Optional<Char> findById(Long id){return charRepository.findById(id);}
+
+    public Optional<Char> findByCharName(String charName){return charRepository.findByCharName(charName);}
 
     @Transactional
     public void delete(Char charModel){charRepository.delete(charModel);}
@@ -80,7 +80,6 @@ public class CharService {
         return false;
     }
 
-    //Combate com bonus quando a classe do personagem e o item possuem o mesmo combat type : RANGED ou MELEE
     public int CombatWithBonus(Char aChar, Char enemy, Items item){
         int diceRoll = atkRoll() + aChar.getLevel();
         int enemyDef = enemyDef(enemy);

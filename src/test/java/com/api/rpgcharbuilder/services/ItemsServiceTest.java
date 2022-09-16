@@ -36,13 +36,9 @@ class ItemsServiceTest {
     private ItemsRepository itemsRepository;
 
     @Test
-    void existsByItemName() {
-    }
-
-    @Test
     void shouldSaveOneClasse() {
         //Prepara
-        final var itemToSave = new Items(CombatType.MELEE, "Espada", 2, Dice.D6);
+        final var itemToSave = new Items(1L, CombatType.MELEE, "Espada", 2, Dice.D6);
         Mockito.when(itemsRepository.save(Mockito.any(Items.class))).thenReturn(itemToSave);
 
         //Faz
@@ -71,13 +67,73 @@ class ItemsServiceTest {
     }
 
     @Test
+    void shouldFindAndReturnOneItemByName() {
+        final var expectedItem = new Items(1L, CombatType.MELEE, "Espada", 1 , Dice.D20);
+        Mockito.when(itemsRepository.findByItemName(Mockito.anyString())).thenReturn(Optional.of(expectedItem));
+
+        final var actual = itemsService.findByItemName("Cajado");
+
+        assertThat(actual).usingRecursiveComparison().isEqualTo(Optional.of(expectedItem));
+        Mockito.verify(itemsRepository, Mockito.times(1)).findByItemName(Mockito.anyString());
+        Mockito.verifyNoMoreInteractions(itemsRepository);
+    }
+
+    @Test
+    void shouldFindASpecificItemByName(){
+        final var expectedItem = new Items(1L, CombatType.MELEE, "Espada", 1 , Dice.D20);
+        Mockito.when(itemsRepository.findByItemName("Espada")).thenReturn(Optional.of(expectedItem));
+
+        final var actual = itemsService.findByItemName("Espada");
+
+        assertThat(actual).usingRecursiveComparison().isEqualTo(Optional.of(expectedItem));
+        Mockito.verify(itemsRepository, Mockito.times(1)).findByItemName(Mockito.anyString());
+        Mockito.verifyNoMoreInteractions(itemsRepository);
+    }
+
+    @Test
+    void shouldNotFindASpecificItemByName(){
+        final var expectedItem = new Items(1L, CombatType.MELEE, "Espada", 1 , Dice.D20);
+        Mockito.when(itemsRepository.findByItemName("Espada")).thenReturn(Optional.of(expectedItem));
+
+        final var actual = itemsService.findByItemName("Cajado");
+
+        assertThat(actual).usingRecursiveComparison().isNotEqualTo(Optional.of(expectedItem));
+        Mockito.verify(itemsRepository, Mockito.times(1)).findByItemName(Mockito.anyString());
+        Mockito.verifyNoMoreInteractions(itemsRepository);
+    }
+
+    @Test
     void shouldFindAndReturnOneItemById() {
-        final var expectedItem = new Items(CombatType.MELEE, "Espada", 2, Dice.D6);
+        final var expectedItem = new Items(1L, CombatType.MELEE, "Espada", 2, Dice.D6);
         Mockito.when(itemsRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(expectedItem));
 
         final var actual = itemsService.findById(8L);
 
         assertThat(actual).usingRecursiveComparison().isEqualTo(Optional.of(expectedItem));
+        Mockito.verify(itemsRepository, Mockito.times(1)).findById(Mockito.anyLong());
+        Mockito.verifyNoMoreInteractions(itemsRepository);
+    }
+
+    @Test
+    void shouldFindASpecificRaceByID(){
+        final var expectedItem = new Items(1L, CombatType.MELEE, "Espada", 2, Dice.D6);
+        Mockito.when(itemsRepository.findById(1L)).thenReturn(Optional.of(expectedItem));
+
+        final var actual = itemsService.findById(1L);
+
+        assertThat(actual).usingRecursiveComparison().isEqualTo(Optional.of(expectedItem));
+        Mockito.verify(itemsRepository, Mockito.times(1)).findById(Mockito.anyLong());
+        Mockito.verifyNoMoreInteractions(itemsRepository);
+    }
+
+    @Test
+    void shouldNotFindASpecificRaceByID(){
+        final var expectedItem = new Items(1L, CombatType.MELEE, "Espada", 2, Dice.D6);
+        Mockito.when(itemsRepository.findById(1L)).thenReturn(Optional.of(expectedItem));
+
+        final var actual = itemsService.findById(2L);
+
+        assertThat(actual).usingRecursiveComparison().isNotEqualTo(Optional.of(expectedItem));
         Mockito.verify(itemsRepository, Mockito.times(1)).findById(Mockito.anyLong());
         Mockito.verifyNoMoreInteractions(itemsRepository);
     }
@@ -95,7 +151,7 @@ class ItemsServiceTest {
 
     @Test
     void charShouldHaveItem() {
-        final var novoItem = new Items(CombatType.MELEE, "Espada", 2, Dice.D6);
+        final var novoItem = new Items(1L, CombatType.MELEE, "Espada", 2, Dice.D6);
         final var novoChar = new Char(List.of(novoItem));
 
         assertFalse(itemsService.CharDoesntHaveItem(novoChar, novoItem));
@@ -103,7 +159,7 @@ class ItemsServiceTest {
 
     @Test
     void charShouldNotHaveItem() {
-        final var novoItem = new Items(CombatType.MELEE, "Espada", 2, Dice.D6);
+        final var novoItem = new Items(1L, CombatType.MELEE, "Espada", 2, Dice.D6);
         final var novoChar = new Char();
 
         assertTrue(itemsService.CharDoesntHaveItem(novoChar, novoItem));
@@ -111,14 +167,14 @@ class ItemsServiceTest {
 
     @Test
     void itemShouldBeMeleeType() {
-        final var itemMelee =  new Items(CombatType.MELEE, "Espada", 2, Dice.D6);
+        final var itemMelee =  new Items(1L, CombatType.MELEE, "Espada", 2, Dice.D6);
 
         assertTrue(itemsService.isMelee(itemMelee));
     }
 
     @Test
     void itemShouldNotBeMeleeType() {
-        final var itemMelee =  new Items(CombatType.RANGED, "Arco", 2, Dice.D6);
+        final var itemMelee =  new Items(1L, CombatType.RANGED, "Arco", 2, Dice.D6);
 
         assertFalse(itemsService.isMelee(itemMelee));
     }

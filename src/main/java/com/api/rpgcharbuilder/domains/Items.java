@@ -36,7 +36,8 @@ public class Items {
 
     public Items(){}
 
-    public Items(CombatType itemType, String itemName, int requiredLevel, Dice damage) {
+    public Items(Long id, CombatType itemType, String itemName, int requiredLevel, Dice damage) {
+        this.id = id;
         this.itemType = itemType;
         this.itemName = itemName;
         this.requiredLevel = requiredLevel;

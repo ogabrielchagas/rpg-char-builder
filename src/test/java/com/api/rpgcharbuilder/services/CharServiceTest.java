@@ -38,14 +38,9 @@ class CharServiceTest {
     private CharRepository charRepository;
 
     @Test
-    void nameShouldExists() {
-
-    }
-
-    @Test
     void shouldSaveOneChar() {
         //Prepara
-        final var charToSave = new Char("KL", 2);
+        final var charToSave = new Char(1L, "KL", 2);
         Mockito.when(charRepository.save(Mockito.any(Char.class))).thenReturn(charToSave);
 
         //Faz
@@ -74,13 +69,73 @@ class CharServiceTest {
     }
 
     @Test
+    void shouldFindAndReturnOneCharByName() {
+        final var expectedChar = new Char(1L, "KL", 2);
+        Mockito.when(charRepository.findByCharName(Mockito.anyString())).thenReturn(Optional.of(expectedChar));
+
+        final var actual = charService.findByCharName("PR");
+
+        assertThat(actual).usingRecursiveComparison().isEqualTo(Optional.of(expectedChar));
+        Mockito.verify(charRepository, Mockito.times(1)).findByCharName(Mockito.anyString());
+        Mockito.verifyNoMoreInteractions(charRepository);
+    }
+
+    @Test
+    void shouldFindASpecificCharByName(){
+        final var expectedChar = new Char(1L, "KL", 2);
+        Mockito.when(charRepository.findByCharName("KL")).thenReturn(Optional.of(expectedChar));
+
+        final var actual = charService.findByCharName("KL");
+
+        assertThat(actual).usingRecursiveComparison().isEqualTo(Optional.of(expectedChar));
+        Mockito.verify(charRepository, Mockito.times(1)).findByCharName(Mockito.anyString());
+        Mockito.verifyNoMoreInteractions(charRepository);
+    }
+
+    @Test
+    void shouldNotFindASpecificCharByName(){
+        final var expectedChar = new Char(1L, "KL", 2);
+        Mockito.when(charRepository.findByCharName("KL")).thenReturn(Optional.of(expectedChar));
+
+        final var actual = charService.findByCharName("PR");
+
+        assertThat(actual).usingRecursiveComparison().isNotEqualTo(Optional.of(expectedChar));
+        Mockito.verify(charRepository, Mockito.times(1)).findByCharName(Mockito.anyString());
+        Mockito.verifyNoMoreInteractions(charRepository);
+    }
+
+    @Test
     void shouldFindAndReturnOneCharById() {
-        final var expectedChar = new Char("KL", 2);
+        final var expectedChar = new Char(1L, "KL", 2);
         Mockito.when(charRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(expectedChar));
 
         final var actual = charService.findById(8L);
 
         assertThat(actual).usingRecursiveComparison().isEqualTo(Optional.of(expectedChar));
+        Mockito.verify(charRepository, Mockito.times(1)).findById(Mockito.anyLong());
+        Mockito.verifyNoMoreInteractions(charRepository);
+    }
+
+    @Test
+    void shouldFindASpecificClasseByID(){
+        final var expectedChar = new Char(1L, "KL", 2);
+        Mockito.when(charService.findById(1L)).thenReturn(Optional.of(expectedChar));
+
+        final var actual = charService.findById(1L);
+
+        assertThat(actual).usingRecursiveComparison().isEqualTo(Optional.of(expectedChar));
+        Mockito.verify(charRepository, Mockito.times(1)).findById(Mockito.anyLong());
+        Mockito.verifyNoMoreInteractions(charRepository);
+    }
+
+    @Test
+    void shouldNotFindASpecificClasseByID(){
+        final var expectedChar = new Char(1L, "KL", 2);
+        Mockito.when(charService.findById(1L)).thenReturn(Optional.of(expectedChar));
+
+        final var actual = charService.findById(2L);
+
+        assertThat(actual).usingRecursiveComparison().isNotEqualTo(Optional.of(expectedChar));
         Mockito.verify(charRepository, Mockito.times(1)).findById(Mockito.anyLong());
         Mockito.verifyNoMoreInteractions(charRepository);
     }
@@ -98,7 +153,7 @@ class CharServiceTest {
 
     @Test
     void charShouldBeSetToDead() {
-        final var novoChar = new Char("KL", -1);
+        final var novoChar = new Char(1L, "KL", -1);
         charService.deadOrAlive(novoChar);
 
         assertFalse(novoChar.getAlive());
@@ -106,7 +161,7 @@ class CharServiceTest {
 
     @Test
     void charShouldBeSetToAlive() {
-        final var novoChar = new Char("KL", 10);
+        final var novoChar = new Char(1L, "KL", 10);
         charService.deadOrAlive(novoChar);
 
         assertTrue(novoChar.getAlive());
@@ -131,7 +186,7 @@ class CharServiceTest {
     @Test
     void charLevelShouldBeLesserThanItemLevel() {
         final var novoChar = new CharDto();
-        final var novoItem = new Items(CombatType.MELEE, "Espada", 2, Dice.D6);
+        final var novoItem = new Items(1L, CombatType.MELEE, "Espada", 2, Dice.D6);
 
         Char character = new Char();
         BeanUtils.copyProperties(novoChar, character);
@@ -142,7 +197,7 @@ class CharServiceTest {
     @Test
     void charLevelShouldBeGreaterThanOrEqualToItemLevel() {
         final var novoChar = new CharDto();
-        final var novoItem = new Items(CombatType.MELEE, "Espada", 1, Dice.D6);
+        final var novoItem = new Items(1L, CombatType.MELEE, "Espada", 1, Dice.D6);
 
         Char character = new Char();
         BeanUtils.copyProperties(novoChar, character);
@@ -153,7 +208,7 @@ class CharServiceTest {
     @Test
     void charShouldHaveNewItem() {
         var novoChar = new Char();
-        final var novoItem = new Items(CombatType.MELEE, "Espada", 1, Dice.D6);
+        final var novoItem = new Items(1L, CombatType.MELEE, "Espada", 1, Dice.D6);
 
         novoChar = charService.addNewItem(novoChar, novoItem);
 
@@ -170,7 +225,7 @@ class CharServiceTest {
     @Test
     void charShouldNotBeWithoutItems() {
         var novoChar = new Char();
-        final var novoItem = new Items(CombatType.MELEE, "Espada", 1, Dice.D6);
+        final var novoItem = new Items(1L, CombatType.MELEE, "Espada", 1, Dice.D6);
 
         novoChar = charService.addNewItem(novoChar, novoItem);
 
@@ -191,12 +246,11 @@ class CharServiceTest {
         novoChar.setLevel(2);
 
         assertThat(charService.enemyDef(novoChar)).isEqualTo(12);  //10 + novoChar.getLevel()
-
     }
 
     @Test
     void isDmgTakenWorking() {
-        final var novoChar = new Char("KL", 10);
+        final var novoChar = new Char(1L, "KL", 10);
 
         charService.dmgTaken(novoChar, 5);      //hitpoints = hitpoins - dmgTaken
 
@@ -221,8 +275,8 @@ class CharServiceTest {
         final var novoChar = new Char();
         final var segChar = new Char();
 
-        final var novoItem = new Items(CombatType.MELEE, "Espada", 1, Dice.D6);
-        final var segItem = new Items(CombatType.RANGED, "Arco", 1, Dice.D6);
+        final var novoItem = new Items(1L, CombatType.MELEE, "Espada", 1, Dice.D6);
+        final var segItem = new Items(1L, CombatType.RANGED, "Arco", 1, Dice.D6);
 
         charService.addNewItem(novoChar, novoItem);
         charService.addNewItem(segChar, segItem);
@@ -241,7 +295,7 @@ class CharServiceTest {
 
     @Test
     void hpDiceRollShouldBeInRange() {
-        final var race = new Race("Gigante", Dice.D20);
+        final var race = new Race(1L, "Gigante", Dice.D20);
 
         assertThat(charService.dieRoll(race.getHpDice())).isGreaterThan(0);
         assertThat(charService.dieRoll(race.getHpDice())).isLessThanOrEqualTo(100);

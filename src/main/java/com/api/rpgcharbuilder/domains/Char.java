@@ -38,7 +38,8 @@ public class Char {
     @ApiModelProperty(value = "Campo que associa os Itens possuidos por um Personagem")
     private List<Items> items;
 
-    public Char(String charName, int hp) {
+    public Char(Long id, String charName, int hp) {
+        this.id = id;
         this.charName = charName;
         this.hp = hp;
     }

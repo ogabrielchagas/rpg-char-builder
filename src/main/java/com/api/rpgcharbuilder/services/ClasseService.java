@@ -3,7 +3,6 @@ package com.api.rpgcharbuilder.services;
 import com.api.rpgcharbuilder.domains.Char;
 import com.api.rpgcharbuilder.domains.Classe;
 import com.api.rpgcharbuilder.domains.CombatType;
-import com.api.rpgcharbuilder.domains.Items;
 import com.api.rpgcharbuilder.repositories.ClasseRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +27,8 @@ public class ClasseService {
     public Page<Classe> findAll(Pageable pageable){return classeRepository.findAll(pageable);}
 
     public Optional<Classe> findById(Long id){return classeRepository.findById(id);}
+
+    public Optional<Classe> findByClasseName(String classeName){return classeRepository.findByClasseName(classeName);}
 
     @Transactional
     public void delete(Classe classeModel){classeRepository.delete(classeModel);}

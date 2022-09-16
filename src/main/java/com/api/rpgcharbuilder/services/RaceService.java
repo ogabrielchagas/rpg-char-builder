@@ -1,7 +1,5 @@
 package com.api.rpgcharbuilder.services;
 
-import com.api.rpgcharbuilder.domains.Char;
-import com.api.rpgcharbuilder.domains.Dice;
 import com.api.rpgcharbuilder.domains.Race;
 import com.api.rpgcharbuilder.repositories.RaceRepository;
 import org.springframework.data.domain.Page;
@@ -10,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
-import java.util.Random;
+
 
 @Service
 public class RaceService {
@@ -29,6 +27,8 @@ public class RaceService {
     public Page<Race> findAll(Pageable pageable){return raceRepository.findAll(pageable);}
 
     public Optional<Race> findById(Long id){return raceRepository.findById(id);}
+
+    public Optional<Race> findByRaceName(String raceName){return raceRepository.findByRaceName(raceName);}
 
     @Transactional
     public void delete(Race raceModel){raceRepository.delete(raceModel);}

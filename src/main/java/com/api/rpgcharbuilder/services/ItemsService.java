@@ -1,9 +1,6 @@
 package com.api.rpgcharbuilder.services;
 
-import com.api.rpgcharbuilder.domains.Char;
-import com.api.rpgcharbuilder.domains.CombatType;
-import com.api.rpgcharbuilder.domains.Dice;
-import com.api.rpgcharbuilder.domains.Items;
+import com.api.rpgcharbuilder.domains.*;
 import com.api.rpgcharbuilder.repositories.ItemsRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
+
 
 @Service
 public class ItemsService {
@@ -30,6 +27,8 @@ public class ItemsService {
     public Page<Items> findAll(Pageable pageable){return itemsRepository.findAll(pageable);}
 
     public Optional<Items> findById(Long id){return itemsRepository.findById(id);}
+
+    public Optional<Items> findByItemName(String itemName){return itemsRepository.findByItemName(itemName);}
 
     @Transactional
     public void delete(Items itemsModel){itemsRepository.delete(itemsModel);}
@@ -49,4 +48,7 @@ public class ItemsService {
             return true;
         return false;
     }
+
+
+
 }
