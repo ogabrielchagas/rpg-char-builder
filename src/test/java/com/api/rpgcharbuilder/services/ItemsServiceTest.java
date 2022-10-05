@@ -67,42 +67,6 @@ class ItemsServiceTest {
     }
 
     @Test
-    void shouldFindAndReturnOneItemByName() {
-        final var expectedItem = new Items(1L, CombatType.MELEE, "Espada", 1 , Dice.D20);
-        Mockito.when(itemsRepository.findByItemName(Mockito.anyString())).thenReturn(Optional.of(expectedItem));
-
-        final var actual = itemsService.findByItemName("Cajado");
-
-        assertThat(actual).usingRecursiveComparison().isEqualTo(Optional.of(expectedItem));
-        Mockito.verify(itemsRepository, Mockito.times(1)).findByItemName(Mockito.anyString());
-        Mockito.verifyNoMoreInteractions(itemsRepository);
-    }
-
-    @Test
-    void shouldFindASpecificItemByName(){
-        final var expectedItem = new Items(1L, CombatType.MELEE, "Espada", 1 , Dice.D20);
-        Mockito.when(itemsRepository.findByItemName("Espada")).thenReturn(Optional.of(expectedItem));
-
-        final var actual = itemsService.findByItemName("Espada");
-
-        assertThat(actual).usingRecursiveComparison().isEqualTo(Optional.of(expectedItem));
-        Mockito.verify(itemsRepository, Mockito.times(1)).findByItemName(Mockito.anyString());
-        Mockito.verifyNoMoreInteractions(itemsRepository);
-    }
-
-    @Test
-    void shouldNotFindASpecificItemByName(){
-        final var expectedItem = new Items(1L, CombatType.MELEE, "Espada", 1 , Dice.D20);
-        Mockito.when(itemsRepository.findByItemName("Espada")).thenReturn(Optional.of(expectedItem));
-
-        final var actual = itemsService.findByItemName("Cajado");
-
-        assertThat(actual).usingRecursiveComparison().isNotEqualTo(Optional.of(expectedItem));
-        Mockito.verify(itemsRepository, Mockito.times(1)).findByItemName(Mockito.anyString());
-        Mockito.verifyNoMoreInteractions(itemsRepository);
-    }
-
-    @Test
     void shouldFindAndReturnOneItemById() {
         final var expectedItem = new Items(1L, CombatType.MELEE, "Espada", 2, Dice.D6);
         Mockito.when(itemsRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(expectedItem));

@@ -71,44 +71,6 @@ class JobServiceTest {
     }
 
     @Test
-    void shouldFindAndReturnOneClasseByName() {
-        final var expectedClasse = new Job(1L, "Mago", CombatType.RANGED);
-        Mockito.when(jobRepository.findByJobName(Mockito.anyString())).thenReturn(Optional.of(expectedClasse));
-
-        final var actual = jobService.findByClasseName("Guerreiro");
-
-        assertThat(actual).usingRecursiveComparison().isEqualTo(Optional.of(expectedClasse));
-        Mockito.verify(jobRepository, Mockito.times(1)).findByJobName(Mockito.anyString());
-        Mockito.verifyNoMoreInteractions(jobRepository);
-    }
-
-    @Test
-    void shouldFindASpecificClasseByName(){
-        final var expectedClasse = new Job(1L, "Mago", CombatType.RANGED);
-        Mockito.when(jobRepository.findByJobName("Mago")).thenReturn(Optional.of(expectedClasse));
-
-        final var actual = jobService.findByClasseName("Mago");
-
-        assertThat(actual).usingRecursiveComparison().isEqualTo(Optional.of(expectedClasse));
-        Mockito.verify(jobRepository, Mockito.times(1)).findByJobName(Mockito.anyString());
-        Mockito.verifyNoMoreInteractions(jobRepository);
-    }
-
-    @Test
-    void shouldNotFindASpecificClasseByName(){
-        final var expectedClasse = new Job(1L, "Mago", CombatType.RANGED);
-        Mockito.when(jobRepository.findByJobName("Mago")).thenReturn(Optional.of(expectedClasse));
-
-        final var actual = jobService.findByClasseName("Guerreiro");
-
-        assertThat(actual).usingRecursiveComparison().isNotEqualTo(Optional.of(expectedClasse));
-        Mockito.verify(jobRepository, Mockito.times(1)).findByJobName(Mockito.anyString());
-        Mockito.verifyNoMoreInteractions(jobRepository);
-    }
-
-
-
-    @Test
     void shouldFindAndReturnOneClasseById() {
         final var expectedClasse = new Job(1L, "Mago", CombatType.RANGED);
         Mockito.when(jobRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(expectedClasse));

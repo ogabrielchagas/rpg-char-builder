@@ -33,43 +33,7 @@ class RaceServiceTest {
 
     @Mock
     private RaceRepository raceRepository;
-
-    @Test
-    void shouldFindAndReturnOneRaceByName() {
-        final var expectedRace = new Race(1L, "Gigante", Dice.D20);
-        Mockito.when(raceRepository.findByRaceName(Mockito.anyString())).thenReturn(Optional.of(expectedRace));
-
-        final var actual = raceService.findByRaceName("Humano");
-
-        assertThat(actual).usingRecursiveComparison().isEqualTo(Optional.of(expectedRace));
-        Mockito.verify(raceRepository, Mockito.times(1)).findByRaceName(Mockito.anyString());
-        Mockito.verifyNoMoreInteractions(raceRepository);
-    }
-
-    @Test
-    void shouldFindASpecificRaceByName(){
-        final var expectedRace = new Race(1L, "Gigante", Dice.D20);
-        Mockito.when(raceRepository.findByRaceName("Gigante")).thenReturn(Optional.of(expectedRace));
-
-        final var actual = raceService.findByRaceName("Gigante");
-
-        assertThat(actual).usingRecursiveComparison().isEqualTo(Optional.of(expectedRace));
-        Mockito.verify(raceRepository, Mockito.times(1)).findByRaceName(Mockito.anyString());
-        Mockito.verifyNoMoreInteractions(raceRepository);
-    }
-
-    @Test
-    void shouldNotFindASpecificRaceByName(){
-        final var expectedRace = new Race(1L, "Gigante", Dice.D20);
-        Mockito.when(raceRepository.findByRaceName("Gigante")).thenReturn(Optional.of(expectedRace));
-
-        final var actual = raceService.findByRaceName("Humano");
-
-        assertThat(actual).usingRecursiveComparison().isNotEqualTo(Optional.of(expectedRace));
-        Mockito.verify(raceRepository, Mockito.times(1)).findByRaceName(Mockito.anyString());
-        Mockito.verifyNoMoreInteractions(raceRepository);
-    }
-
+    
     @Test
     void shouldSaveOneRace() {
         //Prepara

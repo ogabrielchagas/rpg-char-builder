@@ -69,42 +69,6 @@ class CharServiceTest {
     }
 
     @Test
-    void shouldFindAndReturnOneCharByName() {
-        final var expectedChar = new Char(1L, "KL", 2);
-        Mockito.when(charRepository.findByCharName(Mockito.anyString())).thenReturn(Optional.of(expectedChar));
-
-        final var actual = charService.findByCharName("PR");
-
-        assertThat(actual).usingRecursiveComparison().isEqualTo(Optional.of(expectedChar));
-        Mockito.verify(charRepository, Mockito.times(1)).findByCharName(Mockito.anyString());
-        Mockito.verifyNoMoreInteractions(charRepository);
-    }
-
-    @Test
-    void shouldFindASpecificCharByName(){
-        final var expectedChar = new Char(1L, "KL", 2);
-        Mockito.when(charRepository.findByCharName("KL")).thenReturn(Optional.of(expectedChar));
-
-        final var actual = charService.findByCharName("KL");
-
-        assertThat(actual).usingRecursiveComparison().isEqualTo(Optional.of(expectedChar));
-        Mockito.verify(charRepository, Mockito.times(1)).findByCharName(Mockito.anyString());
-        Mockito.verifyNoMoreInteractions(charRepository);
-    }
-
-    @Test
-    void shouldNotFindASpecificCharByName(){
-        final var expectedChar = new Char(1L, "KL", 2);
-        Mockito.when(charRepository.findByCharName("KL")).thenReturn(Optional.of(expectedChar));
-
-        final var actual = charService.findByCharName("PR");
-
-        assertThat(actual).usingRecursiveComparison().isNotEqualTo(Optional.of(expectedChar));
-        Mockito.verify(charRepository, Mockito.times(1)).findByCharName(Mockito.anyString());
-        Mockito.verifyNoMoreInteractions(charRepository);
-    }
-
-    @Test
     void shouldFindAndReturnOneCharById() {
         final var expectedChar = new Char(1L, "KL", 2);
         Mockito.when(charRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(expectedChar));
