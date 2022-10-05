@@ -30,7 +30,7 @@ public class Char {
     @ManyToOne
     @JoinColumn(name = "classe_id")
     @ApiModelProperty(value = "Campo que associa uma Classe ao Personagem")
-    private Classe classe;
+    private Job job;
     @ManyToMany
     @JoinTable(name = "chars_items",
             joinColumns = @JoinColumn(name = "char_id"),
@@ -124,12 +124,12 @@ public class Char {
         this.race = race;
     }
 
-    public Classe getClasse() {
-        return classe;
+    public Job getClasse() {
+        return job;
     }
 
-    public void setClasse(Classe classe) {
-        this.classe = classe;
+    public void setClasse(Job job) {
+        this.job = job;
     }
 
     public List<Items> getItems() {

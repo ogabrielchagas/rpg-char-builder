@@ -1,14 +1,13 @@
 package com.api.rpgcharbuilder.repositories;
 
-import com.api.rpgcharbuilder.domains.Char;
+import com.api.rpgcharbuilder.domains.Job;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface CharRepository extends JpaRepository<Char, Long> {
+public interface JobRepository extends JpaRepository<Job, Long> {
 
-    boolean existsByCharName(String charName);
-
+    boolean existsByJobName(String jobName);
 }

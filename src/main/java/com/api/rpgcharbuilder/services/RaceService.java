@@ -28,8 +28,6 @@ public class RaceService {
 
     public Optional<Race> findById(Long id){return raceRepository.findById(id);}
 
-    public Optional<Race> findByRaceName(String raceName){return raceRepository.findByRaceName(raceName);}
-
     @Transactional
     public void delete(Race raceModel){raceRepository.delete(raceModel);}
 

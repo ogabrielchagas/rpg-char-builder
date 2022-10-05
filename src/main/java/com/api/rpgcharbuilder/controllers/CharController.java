@@ -1,12 +1,12 @@
 package com.api.rpgcharbuilder.controllers;
 
 import com.api.rpgcharbuilder.domains.Char;
-import com.api.rpgcharbuilder.domains.Classe;
+import com.api.rpgcharbuilder.domains.Job;
 import com.api.rpgcharbuilder.domains.Items;
 import com.api.rpgcharbuilder.domains.Race;
 import com.api.rpgcharbuilder.dtos.CharDto;
 import com.api.rpgcharbuilder.services.CharService;
-import com.api.rpgcharbuilder.services.ClasseService;
+import com.api.rpgcharbuilder.services.JobService;
 import com.api.rpgcharbuilder.services.ItemsService;
 import com.api.rpgcharbuilder.services.RaceService;
 import io.swagger.annotations.Api;
@@ -29,14 +29,14 @@ public class CharController {
     private final CharService charService;
     private final RaceService raceService;
 
-    private final ClasseService classeService;
+    private final JobService jobService;
 
     private final ItemsService itemsService;
 
-    public CharController(CharService charService, RaceService raceService, ClasseService classeService, ItemsService itemsService) {
+    public CharController(CharService charService, RaceService raceService, JobService jobService, ItemsService itemsService) {
         this.charService = charService;
         this.raceService = raceService;
-        this.classeService = classeService;
+        this.jobService = jobService;
         this.itemsService = itemsService;
     }
 
@@ -55,17 +55,6 @@ public class CharController {
         Optional<Char> charModelOptional = charService.findById(id);
         if(charModelOptional.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Character not found.");
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(charModelOptional.get());
-    }
-
-    @ApiOperation(value = "Retorna um personagem dos personagens do RPG cadastrados através de uma busca por Nome", notes = "Endpoint mapeado como opção" +
-            " de filtragem dos personagens por nome.")
-    @GetMapping("/findbyname/{name}")
-    public ResponseEntity<Object> getOneByName(@PathVariable(value = "name") String charName){
-        Optional<Char> charModelOptional = charService.findByCharName(charName);
-        if(charModelOptional.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Character not Found");
         }
         return ResponseEntity.status(HttpStatus.OK).body(charModelOptional.get());
     }
@@ -169,14 +158,14 @@ public class CharController {
     ResponseEntity<Object> addExistingRoleToChar(@PathVariable(value = "charid")Long charId,
                                                  @PathVariable(value = "classeid")Long classeId){
         Optional<Char> charModelOptional = charService.findById(charId);
-        Optional<Classe> classeModelOptional = classeService.findById(classeId);
+        Optional<Job> classeModelOptional = jobService.findById(classeId);
         if(charModelOptional.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Character not found.");
         }
         if(classeModelOptional.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Classe not found.");
         }
-        if(classeService.hasNoRace(charModelOptional.get()))
+        if(jobService.hasNoRace(charModelOptional.get()))
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Char must have a Race before choosing a Classe");
 
         Char charModel = charModelOptional.get();
@@ -249,7 +238,7 @@ public class CharController {
 
         //SE O ITEM ESCOLHIDO FOR DO TIPO MELEE
         if(itemsService.isMelee(itemsModelOptional.get())) {
-            if (classeService.isMelee(charModelOptional.get().getClasse())){
+            if (jobService.isMelee(charModelOptional.get().getClasse())){
                 int dmg = charService.CombatWithBonus(charModelOptional.get(), enemyModelOptional.get(), itemsModelOptional.get());
                 if (dmg == 0)
                     return ResponseEntity.status(HttpStatus.CONFLICT).body("Attack does not hit.");
@@ -268,7 +257,7 @@ public class CharController {
         }
         //SE O ITEM ESCOLHIDO FOR RANGED
         else {
-            if (!classeService.isMelee(charModelOptional.get().getClasse())) {
+            if (!jobService.isMelee(charModelOptional.get().getClasse())) {
                 int dmg = charService.CombatWithBonus(charModelOptional.get(), enemyModelOptional.get(), itemsModelOptional.get());
                 if (dmg == 0)
                     return ResponseEntity.status(HttpStatus.CONFLICT).body("Attack does not hit.");
@@ -294,7 +283,7 @@ public class CharController {
         Optional<Char> charModelOptional = charService.findById(id);
         if(charModelOptional.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Character not found.");
-        if(classeService.hasNoRace(charModelOptional.get()))
+        if(jobService.hasNoRace(charModelOptional.get()))
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Char must have a Race to be revived");
 
         int hpPoints = charService.hpConfigure(charModelOptional.get().getRace().getHpDice(), charModelOptional.get());

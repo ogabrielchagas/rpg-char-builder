@@ -28,8 +28,6 @@ public class ItemsService {
 
     public Optional<Items> findById(Long id){return itemsRepository.findById(id);}
 
-    public Optional<Items> findByItemName(String itemName){return itemsRepository.findByItemName(itemName);}
-
     @Transactional
     public void delete(Items itemsModel){itemsRepository.delete(itemsModel);}
 

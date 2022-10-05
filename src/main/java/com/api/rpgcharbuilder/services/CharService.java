@@ -35,8 +35,6 @@ public class CharService {
 
     public Optional<Char> findById(Long id){return charRepository.findById(id);}
 
-    public Optional<Char> findByCharName(String charName){return charRepository.findByCharName(charName);}
-
     @Transactional
     public void delete(Char charModel){charRepository.delete(charModel);}
 

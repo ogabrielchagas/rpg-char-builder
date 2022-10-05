@@ -8,29 +8,28 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "tb_classe")
-public class Classe {
+@Table(name = "tb_job")
+public class Job {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(value = "ID gerado para identificação das Classes do RPG", required = true)
     private Long id;
-    @ApiModelProperty(value = "Nome da Classe do RPG como Guerreiro, Mago e Arqueiro", required = true)
-    private String classeName;
-    @ApiModelProperty(value = "Tipo de combate da Classe, MELEE (Corpo a Corpo) ou RANGED (A Distancia), Influencia quais itens cada classe se sai melhor", required = true)
+    @ApiModelProperty(value = "Nome da Classe/Job do RPG como Guerreiro, Mago e Arqueiro", required = true)
+    private String jobName;
+    @ApiModelProperty(value = "Tipo de combate da Classe/Job, MELEE (Corpo a Corpo) ou RANGED (A Distancia), Influencia quais itens cada classe se sai melhor", required = true)
     @Enumerated(value = EnumType.STRING)
     private CombatType combatType;
 
     @ApiModelProperty(value = "Campo não preenchido por usuários, utilizado para que o mapemanto ManyToOne reconheça quais personagens são dessa classe")
-    @OneToMany(mappedBy = "classe", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Char> char_id;
 
-    public Classe(){}
+    public Job(){}
 
-
-    public Classe(Long id, String classeName, CombatType combatType) {
+    public Job(Long id, String jobName, CombatType combatType) {
         this.id = id;
-        this.classeName = classeName;
+        this.jobName = jobName;
         this.combatType = combatType;
     }
 
@@ -38,8 +37,8 @@ public class Classe {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Classe classe = (Classe) o;
-        return Objects.equals(id, classe.id);
+        Job job = (Job) o;
+        return Objects.equals(id, job.id);
     }
 
     @Override
@@ -55,12 +54,12 @@ public class Classe {
         this.id = id;
     }
 
-    public String getClasseName() {
-        return classeName;
+    public String getJobName() {
+        return jobName;
     }
 
-    public void setClasseName(String classeName) {
-        this.classeName = classeName;
+    public void setJobName(String classeName) {
+        this.jobName = classeName;
     }
 
     public CombatType getCombatType() {

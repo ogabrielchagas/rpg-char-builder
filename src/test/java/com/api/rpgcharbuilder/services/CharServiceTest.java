@@ -177,7 +177,7 @@ class CharServiceTest {
     @Test
     void charShouldHaveClasse() {
         final var novoChar = new Char();
-        final var novaClasse = new Classe();
+        final var novaClasse = new Job();
         novoChar.setClasse(novaClasse);
 
         assertFalse(charService.hasNoClasse(novoChar));

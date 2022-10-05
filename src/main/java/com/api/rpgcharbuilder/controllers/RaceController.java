@@ -43,17 +43,6 @@ public class RaceController {
         return ResponseEntity.status(HttpStatus.OK).body(raceModelOptional.get());
     }
 
-    @ApiOperation(value = "Retorna uma raça das raças de RPG cadastradas através de uma busca por Nome", notes = "Endpoint mapeado como opção" +
-            " de filtragem das raças por nome.")
-    @GetMapping("/findbyname/{name}")
-    public ResponseEntity<Object> getOneByName(@PathVariable(value = "name") String raceName){
-        Optional<Race> raceModelOptional = raceService.findByRaceName(raceName);
-        if(raceModelOptional.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Race not Found");
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(raceModelOptional.get());
-    }
-
     @ApiOperation(value = "Cria uma nova Raça de RPG", notes = "Endpoint mapeado para o organizador do jogo de RPG (Mestre)" +
             " adicionar novas opções de escolha de raças a seu jogo como Humanos, Anões e Elfos.")
     @PostMapping

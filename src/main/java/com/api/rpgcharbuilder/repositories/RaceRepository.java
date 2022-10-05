@@ -10,5 +10,4 @@ import java.util.Optional;
 public interface RaceRepository extends JpaRepository<Race, Long> {
     boolean existsByRaceName(String raceName);
 
-    Optional<Race> findByRaceName(String raceName);
 }
