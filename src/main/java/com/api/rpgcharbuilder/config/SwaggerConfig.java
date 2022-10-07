@@ -31,7 +31,7 @@ public class SwaggerConfig{
                 .pathMapping("/")
                 .apiInfo(metaData())
                 .tags(new Tag("Race Controller","Controlador para Raças jogáveis inspiradas de Gêneros RPG/Fantasia Medieval"),
-                        new Tag("Classe Controller", "Controlador para Classes/Profissões inspiradas de Gêneros RPG/Fantasia Medieval"),
+                        new Tag("Job Controller", "Controlador para Classes/Jobs inspiradas de Gêneros RPG/Fantasia Medieval"),
                         new Tag("Items Controller", "Controlador para Itens jogáveis inspirados de Gêneros RPG/Fantasia Medieval"),
                         new Tag("Characters Controller", "Controlador para os Personagens(Chars) dos Jogadores e do Mestre"));
     }

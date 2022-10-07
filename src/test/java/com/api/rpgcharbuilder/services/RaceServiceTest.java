@@ -33,7 +33,7 @@ class RaceServiceTest {
 
     @Mock
     private RaceRepository raceRepository;
-    
+
     @Test
     void shouldSaveOneRace() {
         //Prepara
