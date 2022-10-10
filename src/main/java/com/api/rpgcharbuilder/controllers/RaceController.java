@@ -16,6 +16,7 @@ import java.util.Optional;
 
 @Api(tags = {"Race Controller"})
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/races")
 public class RaceController {
     private final RaceService raceService;
