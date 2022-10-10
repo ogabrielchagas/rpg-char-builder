@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @RestController
 @Api(tags = {"Items Controller"})
-@RequestMapping("/api/v1/items")
+@RequestMapping("/items")
 public class ItemsController {
     private final ItemsService itemsService;
 

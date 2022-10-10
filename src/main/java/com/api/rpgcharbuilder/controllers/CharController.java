@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/chars")
+@RequestMapping("/chars")
 @Api(tags = {"Characters Controller"})
 public class CharController {
     private final CharService charService;

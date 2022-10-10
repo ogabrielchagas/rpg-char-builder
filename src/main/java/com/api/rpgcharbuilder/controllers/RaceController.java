@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Api(tags = {"Race Controller"})
 @RestController
-@RequestMapping("/api/v1/race")
+@RequestMapping("/races")
 public class RaceController {
     private final RaceService raceService;
 

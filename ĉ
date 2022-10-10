@@ -1,0 +1,77 @@
+[33mcommit 6b73d21dd0bbde7b5d6b7cb0911edbfeadb1f62e[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: devChagas <gabriel.chagas2044@gmail.com>
+Date:   Fri Oct 7 15:38:58 2022 -0300
+
+    Implementando Instância de base dados fixas através do CommandLineRunner para subir ao Heroku
+
+[33mcommit 6a742fdfccbc87833dd88177deb13430474b5912[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: devChagas <gabriel.chagas2044@gmail.com>
+Date:   Wed Oct 5 11:43:39 2022 -0300
+
+    Removendo findByName dos Testes
+
+[33mcommit eea9f2c75aa879ca48d30310732b972f3e785ae8[m
+Author: devChagas <gabriel.chagas2044@gmail.com>
+Date:   Wed Oct 5 11:40:54 2022 -0300
+
+    Adicionando system.properties para o Heroku
+
+[33mcommit cae284c170f25defdc7e6f1f80b5f3f362056464[m
+Author: devChagas <gabriel.chagas2044@gmail.com>
+Date:   Wed Oct 5 11:35:30 2022 -0300
+
+    Retirando metodos de findByName e refatorando Classe por Job
+
+[33mcommit de9e6d8e7ee5e8c0bfd1ecedd6bfcc8cb5093468[m
+Author: devChagas <gabriel.chagas2044@gmail.com>
+Date:   Fri Sep 16 15:33:38 2022 -0300
+
+    Adicionado endpoint para filtrar Chars, Items, Races e Classes por nome. Adicionado testes de unidade para essas funções de retornar por nome
+
+[33mcommit 3e55fcb4fabaf0aac71ca8a2c0a8297d8af9733c[m
+Author: devChagas <gabriel.chagas2044@gmail.com>
+Date:   Fri Sep 16 12:00:41 2022 -0300
+
+    Finalizado a documentação pelo Swagger
+
+[33mcommit 2ad74dd56f2b710e3f6b159f3bcbdf686bca8001[m
+Author: devChagas <gabriel.chagas2044@gmail.com>
+Date:   Thu Sep 15 18:51:15 2022 -0300
+
+    Acionado /api/v1 aos endpoints, Configuração do Swagger 2 e inpicio da documentação
+
+[33mcommit e454909b3c7fdb50eccbac2e08768d0c24848db6[m
+Author: devChagas <gabriel.chagas2044@gmail.com>
+Date:   Wed Sep 14 16:52:34 2022 -0300
+
+    Refatoração das regras de negócio na Camada de Serviços
+
+[33mcommit 6fd7afbfde7c89aa2f76f1a2ed9965d5d557355a[m
+Author: devChagas <gabriel.chagas2044@gmail.com>
+Date:   Wed Sep 14 11:55:19 2022 -0300
+
+    Finalizado implementação dos Testes de unidades para as camadas de serviço, restante apenas o método existsBy
+
+[33mcommit 41cd9e3607a7af698866678f57fbd27c0382e1d6[m
+Author: devChagas <gabriel.chagas2044@gmail.com>
+Date:   Tue Sep 13 18:27:57 2022 -0300
+
+    Implementação dos testes de unidade das regras de negócio além das operaçoes CRUD e refatoração de regras de´negócio
+
+[33mcommit 59f2c0030e41c63373d763e5ebffc234c78d19fc[m
+Author: devChagas <gabriel.chagas2044@gmail.com>
+Date:   Tue Sep 13 15:27:55 2022 -0300
+
+    Início da Implementação dos Testes de unidade para as camadas de serviço de Classes e Races
+
+[33mcommit ea5e1d8adf20705034dccde0b9b4c64e233f681d[m
+Author: devChagas <gabriel.chagas2044@gmail.com>
+Date:   Tue Sep 13 11:35:26 2022 -0300
+
+    CharDto, regras para combate e criação passo a passo de um char não NPC
+
+[33mcommit 4127d4b5e074bcc96ffe47dcb9bf6be0dad0a333[m
+Author: devChagas <gabriel.chagas2044@gmail.com>
+Date:   Mon Sep 12 18:50:27 2022 -0300
+
+    Domains, Repositories, Services e Controllers

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/job")
+@RequestMapping("/jobs")
 @Api(tags = {"Job Controller"})
 public class JobController {
     private final JobService jobService;
