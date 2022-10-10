@@ -75,8 +75,8 @@ public class JobController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") Long id,
                                          @RequestBody Job jobModel){
-        Optional<Job> classeModelOptional = jobService.findById(id);
-        if(classeModelOptional.isEmpty()){
+        Optional<Job> jobModelOptional = jobService.findById(id);
+        if(jobModelOptional.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Job not found.");
         }
         return ResponseEntity.status(HttpStatus.OK).body(jobService.save(jobModel));
