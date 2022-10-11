@@ -62,7 +62,7 @@ public class RaceController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Race not found.");
         }
         raceService.delete(raceModelOptional.get());
-        return ResponseEntity.status(HttpStatus.OK).body("Race deleted successfully");
+        return ResponseEntity.noContent().build();
     }
 
     @ApiOperation(value = "Atualiza informações de uma Raça de RPG previamente cadastrada", notes = "Endpoint mapeado para o organizador do jogo de RPG (Mestre)" +

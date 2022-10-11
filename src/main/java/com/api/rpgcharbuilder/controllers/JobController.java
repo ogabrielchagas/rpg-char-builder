@@ -67,7 +67,7 @@ public class JobController {
         }
 
         jobService.delete(jobModelOptional.get());
-        return ResponseEntity.status(HttpStatus.OK).body("Job deleted successfully");
+        return ResponseEntity.noContent().build();
     }
 
     @ApiOperation(value = "Atualiza informações de uma Classe/Job de RPG previamente cadastrada", notes = "Endpoint mapeado para o organizador do jogo de RPG (Mestre)" +

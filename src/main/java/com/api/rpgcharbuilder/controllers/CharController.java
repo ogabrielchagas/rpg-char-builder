@@ -90,7 +90,7 @@ public class CharController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Character not found.");
         }
         charService.delete(charModelOptional.get());
-        return ResponseEntity.status(HttpStatus.OK).body("Character deleted successfully");
+        return ResponseEntity.noContent().build();
     }
 
     @ApiOperation(value = "Atualiza informações de um Personagem de RPG do Mestre (NPC) previamente cadastrado", notes = "Endpoint mapeado para o organizador do jogo de RPG (Mestre)" +

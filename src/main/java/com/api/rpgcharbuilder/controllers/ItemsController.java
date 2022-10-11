@@ -63,7 +63,7 @@ public class ItemsController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item not found.");
         }
         itemsService.delete(itemsModelOptional.get());
-        return ResponseEntity.status(HttpStatus.OK).body("Item deleted successfully");
+        return ResponseEntity.noContent().build();
     }
 
     @ApiOperation(value = "Atualiza informações de um Item de RPG previamente cadastrado", notes = "Endpoint mapeado para o organizador do jogo de RPG (Mestre)" +
